@@ -1,161 +1,231 @@
+# Machine learning–based computational drug discovery pipeline for identifying potential inhibitors of soluble epoxide hydrolase (sEH / EPHX2).
 
-# Web-Based QSAR Modeling for Bioactivity Prediction of Soluble Epoxide Hydrolase (sEH) Inhibitors
-
-## 📌 Project Overview
-
-This project presents an **end-to-end QSAR pipeline** for predicting the bioactivity of **soluble epoxide hydrolase (sEH) inhibitors** using machine learning.
-The workflow includes **dataset curation, molecular descriptor generation, model training and validation, interpretability analysis, and deployment as a Streamlit web application**.
-
-The developed model enables **fast and cost-effective virtual screening** of chemical compounds based on SMILES input.
+Computational drug discovery pipeline for identifying potential inhibitors of **soluble epoxide hydrolase (sEH / EPHX2)** using machine learning, virtual screening, molecular docking, ADMET filtering, and molecular dynamics simulations.
 
 ---
 
-## 🎯 Objectives
+## Project Overview
 
-* Compile a high-quality dataset of sEH inhibitors from **ChEMBL**
-* Generate comprehensive molecular descriptors using **PaDEL-Descriptor**
-* Train and compare multiple machine learning models
-* Perform rigorous validation and interpretability analysis
-* Deploy the best-performing model as a **web application**
+Soluble epoxide hydrolase (sEH), encoded by the **EPHX2 gene**, plays a key role in lipid metabolism and regulation of inflammation, cardiovascular diseases, and pain pathways. Inhibiting sEH has emerged as a promising therapeutic strategy.
 
----
+This project implements a **multi-stage computational drug discovery pipeline** to identify potential sEH inhibitors using publicly available bioactivity data and structure-based drug design techniques.
 
-## 🧪 Dataset
-
-* **Target:** Soluble Epoxide Hydrolase (sEH)
-* **Source:** ChEMBL database
-* **Total compounds:** ~2,500
-* **Response variable:** IC₅₀ converted to **pIC₅₀**
-* **Data preprocessing:**
-
-  * Duplicate removal
-  * Missing value handling
-  * Standardization of features
+The workflow integrates **cheminformatics, machine learning, molecular docking, and molecular dynamics simulations** to prioritize compounds with strong inhibitory potential.
 
 ---
 
-## 🧬 Molecular Descriptors
+## Target Protein
 
-* Tool used: **PaDEL-Descriptor**
-* Number of descriptors: **~2,200**
-* Descriptor categories:
+**Protein:** Soluble Epoxide Hydrolase (sEH)  
+**Gene:** EPHX2  
+**ChEMBL Target ID:** CHEMBL1929  
+**Example PDB Structure:** 3ANS  
 
-  * Physicochemical
-  * Topological
-  * Constitutional
-  * Fingerprints
+sEH functions as a homodimeric enzyme responsible for converting epoxides to diols. Inhibiting this enzyme has shown therapeutic potential for:
 
-Descriptors were scaled using **StandardScaler**, saved as:
-
-* `seh_features_*.txt`
-* `seh_scaler.pkl`
+- Inflammation
+- Hypertension
+- Cardiovascular disorders
+- Neuropathic pain
 
 ---
 
-## 🤖 Machine Learning Models
+## Computational Pipeline
 
-Multiple algorithms were evaluated, including:
+The project follows a multi-stage computational workflow:
 
-* Linear Models (Ridge, Lasso, ElasticNet)
-* Support Vector Regression
-* Random Forest
-* Gradient Boosting
-* LightGBM
-* CatBoost
-* **XGBoost (Best Model)**
+### 1. Data Collection
+Bioactivity data for sEH inhibitors was retrieved from **ChEMBL database**.
 
-### ⭐ Best Model Performance
+Dataset includes:
 
-* **Model:** XGBoost Regressor
-* **R²:** ~0.82
-* **Validation:**
+- IC50 values
+- SMILES structures
+- Compound identifiers
 
-  * Train/Test split
-  * Cross-validation
-  * Y-randomization
-  * Applicability domain analysis
-
-Saved model files:
-
-* `seh_model.pkl`
-* `seh_scaler.pkl`
+After preprocessing and filtering, a curated dataset was generated for modeling.
 
 ---
 
-## 🔍 Model Interpretability
+### 2. Data Preprocessing
 
-* **SHAP (SHapley Additive exPlanations)** was used
-* Key influential descriptors:
+Processing steps included:
 
-  * LogP
-  * Molecular weight
-  * Hydrogen bond acceptors
-  * Aromatic ring count
-  * TPSA
+- Removal of duplicate compounds
+- Standardization of IC50 values
+- Conversion to **pIC50**
+- SMILES validation
+- Removal of missing values
 
----
-
-## 🌐 Web Application (Streamlit)
-
-The trained model is deployed as a **Streamlit web app** that allows users to:
-
-* Input SMILES strings
-* Generate molecular descriptors
-* Predict bioactivity (pIC₅₀)
-* Download prediction results
+Final dataset used for machine learning modeling.
 
 ---
 
-## ▶️ How to Run the Project Locally
+### 3. Feature Generation
 
-### 1️⃣ Create a virtual environment
+Molecular descriptors and fingerprints were calculated using **RDKit**.
 
-```bash
-conda create -n seh_qsar python=3.8
-conda activate seh_qsar
-```
+Features include:
 
-### 2️⃣ Install dependencies
+- Molecular weight
+- LogP
+- Topological polar surface area
+- Hydrogen bond donors and acceptors
+- Molecular fingerprints (ECFP / Morgan)
 
-```bash
-pip install -r requirements.txt
-```
-
-### 3️⃣ Launch the Streamlit app
-
-```bash
-streamlit run app.py
-```
+These descriptors were used as input features for QSAR modeling.
 
 ---
 
-## 📂 Project Structure
+### 4. Machine Learning Model (QSAR)
 
-```
-seh_qsar_project/
-│
-├── App/                # Streamlit application
-├── Models/             # Trained models & scaler
-├── Descriptors/        # PaDEL descriptor outputs
-├── Notebooks/          # Jupyter notebooks
-├── Results/            # Prediction results
-├── Notes_and_PPT/      # Project presentation
-├── requirements.txt
-└── README.md
-```
+Multiple regression models were trained to predict **pIC50 values** of compounds.
 
----
+Models evaluated include:
 
-## 🚀 Conclusion
+- Ridge Regression
+- Random Forest
+- XGBoost
+- LightGBM
+- CatBoost
 
-This project demonstrates the successful application of **machine learning-based QSAR modeling** for predicting sEH inhibitor potency.
-The developed pipeline is **robust, interpretable, and deployment-ready**, enabling efficient virtual screening in early-stage drug discovery.
+Model performance was evaluated using:
+
+- R² Score
+- RMSE
+- MAE
+- Cross-validation
 
 ---
 
-## 👤 Author
+### 5. Virtual Screening
 
-**M. Ramana Maharshi**
-B.Tech Bioinformatics
+The trained model was applied to screen a compound library to identify potential inhibitors with high predicted pIC50 values.
+
+Top candidates were selected for further structure-based evaluation.
 
 ---
+
+### 6. Molecular Docking
+
+Selected compounds were docked against the **sEH catalytic binding pocket**.
+
+Docking objectives:
+
+- Predict binding pose
+- Estimate binding affinity
+- Identify key protein-ligand interactions
+
+Docking results were ranked based on binding scores.
+
+---
+
+### 7. ADMET Filtering
+
+Top compounds were filtered based on predicted pharmacokinetic properties.
+
+Evaluated properties include:
+
+- Lipinski Rule of Five
+- Drug-likeness
+- Toxicity risk
+- Absorption and metabolism predictions
+
+---
+
+### 8. Molecular Dynamics Simulation
+
+Promising protein-ligand complexes were prepared for **molecular dynamics simulations**.
+
+Simulation steps include:
+
+1. System preparation
+2. Energy minimization
+3. NVT equilibration
+4. NPT equilibration
+5. Production MD simulation
+
+MD simulations were used to evaluate:
+
+- Complex stability
+- RMSD
+- RMSF
+- Hydrogen bonding
+- Binding interactions
+
+---
+
+
+---
+
+## Tools and Libraries
+
+Python ecosystem:
+
+- RDKit
+- Scikit-learn
+- XGBoost
+- LightGBM
+- CatBoost
+- Pandas
+- NumPy
+
+Computational chemistry tools:
+
+- AutoDock Vina
+- GROMACS
+- PyMOL
+- VMD
+
+---
+
+## Key Results
+
+- Machine learning models successfully predicted pIC50 values of sEH inhibitors.
+- Virtual screening identified potential candidate molecules with strong predicted activity.
+- Docking studies suggested favorable binding interactions within the sEH catalytic pocket.
+- MD simulations provided insights into protein-ligand stability.
+
+---
+
+## Applications
+
+This pipeline can be adapted for:
+
+- drug discovery
+- inhibitor design
+- QSAR modeling
+- computational chemistry research
+- bioinformatics drug target studies
+
+---
+
+## Future Work
+
+Possible extensions include:
+
+- Graph neural network models
+- generative AI for molecule design
+- free energy calculations
+- experimental validation of predicted inhibitors
+
+---
+
+## Author
+
+Bioinformatics and Computational Drug Discovery Project
+
+Focus Areas:
+
+- Bioinformatics
+- Machine Learning
+- Drug Discovery
+- Molecular Modeling
+
+---
+
+## License
+
+This project is intended for academic and research purposes.
+
+## Repository Structure
