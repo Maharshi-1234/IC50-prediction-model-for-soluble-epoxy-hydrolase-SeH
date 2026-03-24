@@ -228,4 +228,71 @@ Focus Areas:
 
 This project is intended for academic and research purposes.
 
+## How to Run the Web App Locally
+
+### 1. Create a virtual environment
+
+```bash
+conda create -n seh_qsar python=3.9
+conda activate seh_qsar
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Launch the Streamlit app
+
+```bash
+streamlit run App/bioactivity_prediction_app.py
+```
+
+Then upload a descriptor CSV file (generated from your molecules) and click **Predict** to get pIC50 predictions.
+
+---
+
 ## Repository Structure
+
+```
+IC50-prediction-model-for-soluble-epoxy-hydrolase-SeH/
+│
+├── App/                          # Streamlit web application
+│   ├── bioactivity_prediction_app.py
+│   ├── seh_model_XGBoost_20260130_051249.pkl
+│   ├── seh_scaler.pkl
+│   ├── seh_features_20260130_051249.txt
+│   ├── logo.png
+│   ├── sampleinput.txt
+│   └── requirements.txt
+│
+├── Models/                       # Saved model and scaler files
+│   ├── seh_model_XGBoost_20260130_051249.pkl
+│   └── seh_scaler_20260130_051249.pkl
+│
+├── Notebook/                     # Jupyter notebooks
+│   └── SEH_QSAR_WORKING (3).ipynb
+│
+├── Notes and PPT/                # Project notes and presentation
+│   ├── Epoxide SeH Final Project.pptx
+│   ├── Epoxide project notes.pdf
+│   └── ChatGPT - Epoxide Project chat.pdf
+│
+├── Results/                      # Model metrics and results
+│   ├── seh_results_20260130_051249_models_metrics.csv
+│   └── seh_features_20260130_051249_MorganFingerprints.txt
+│
+├── Seh_Guide/                    # Guides and manuscript files
+│   ├── QUICK_START_GUIDE.md
+│   ├── README_PACKAGE1.md
+│   ├── MANUSCRIPT_INTRODUCTION.md
+│   └── SEH_Package1_COMPLETE_Ready_To_Run.ipynb
+│
+├── descriptor_list.csv           # Full molecular descriptor list
+├── logo.png                      # Project logo
+├── requirements.txt              # Python dependencies
+├── sampleinput.txt               # Sample input molecules (SMILES)
+├── testmolecules.txt             # Test molecule SMILES
+└── README.md
+```
